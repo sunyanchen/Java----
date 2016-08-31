@@ -1,9 +1,13 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import=java.net.* %>
+<%@page import="java.net.*" %>
 <%@page import="entity.Items"%>
 <%@page import="dao.ItemsDao"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    <%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -66,27 +70,28 @@
 				%>
 				<!-- 浏览过的商品 -->
 				<%
-					String strItemId = "";
+					String list = "";
 					//从客户端获取cookie的集合
 					Cookie[] cookies = request.getCookies();
 					if(cookies != null && cookies.length>0){
 						for(Cookie c : cookies){
 							if(c.getName().equals("ListViewCookie")){
-								strItemId = c.getValue();
+								list = c.getValue();
 							}
 						}
 					}
 					
-					strItemId += request.getParameter("id") + ",";
-					
-					String[] strTemp = strItemId.split(",");
+					list += request.getParameter("id") + ",";
+					System.out.println(list);
+					System.out.println("list.length: = " + list.length());
+					String[] arr = list.split(",");
 					//如果存储的cookie大于1000
-					if(strTemp != null && strTemp.length>0){
-						if(strTemp.length > 1000){
-							strItemId = "";
+					if(arr != null && arr.length>0){
+						if(arr.length >= 1000){
+							list = "";
 						}
 					}
-					Cookie cookie = new Cookie("ListViewCookie",strItemId);
+					Cookie cookie = new Cookie("ListViewCookie",list);
 					response.addCookie(cookie);
 				%>
 				<td width="30%" bgcolor="" align="center">
@@ -94,7 +99,7 @@
 					<b>您浏览过的商品</b><br>
 					<!-- 循环开始 -->
 					<%
-						ArrayList<Items> itemList = itemsDao.getViewList(strItemId);
+						ArrayList<Items> itemList = itemsDao.getViewList(list);
 						if(itemList != null && itemList.size()>0){
 							System.out.println("itemList.size:" + itemList.size());
 							for(Items itemTmp : itemList){

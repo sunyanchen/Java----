@@ -113,19 +113,19 @@ public class ItemsDao {
 	
 	//获取最近浏览的前五条商品信息
 	public ArrayList<Items> getViewList(String list) {
-		System.out.println("list" + list);
+		System.out.println("list:" + list);
 		ArrayList<Items> itemList = new ArrayList<Items>();
 		int iCount = 5;
 		if (list != null && list.length()>0) {
 			String[] arr = list.split(",");
-			System.out.println("listlength" + list.length());
-			if (list.length()>5) {
-				for (int i = list.length()-1; i<list.length()-iCount; i--) {
+			System.out.println("arr.length==" + list.length());
+			if (arr.length >= 5) {
+				for (int i = arr.length-1; i>=arr.length-iCount; i--) {
 					itemList.add(getItemById(Integer.parseInt(arr[i])));
 				}
 			}
 			else {
-				for (int i =list.length()-1 ;i >= 0; i--) {
+				for (int i =arr.length-1 ;i >= 0; i--) {
 					itemList.add(getItemById(Integer.parseInt(arr[i])));
 				}
 			}
