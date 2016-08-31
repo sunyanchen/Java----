@@ -1,3 +1,7 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import=java.net.* %>
+<%@page import="entity.Items"%>
+<%@page import="dao.ItemsDao"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -34,36 +38,83 @@
 	<center>
 		<table width="750" height="60" cellpadding="0" cellspacing="0" border="0">
 			<tr>
+			<%
+				ItemsDao itemsDao = new ItemsDao();
+				Items item = itemsDao.getItemById(Integer.parseInt(request.getParameter("id")));
+				if(item != null){
+					
+			%>
 			<!-- 商品详情 -->
 				<td width="70%" valign="top">
 					<table>
 						<tr>
-							<td rowspan="4"><img src="images/001.jpg"  width="200" height="160"/></td>
+							<td rowspan="4"><img src="images/<%=item.getPicture() %>"  width="200" height="160"/></td>
 						</tr>
 						<tr>
-							<td><B>沃特篮球鞋</B></td>
+							<td><B><%=item.getName() %></B></td>
 						</tr>
 						<tr>
-							<td>产地：佛山</td>
+							<td>产地：<%=item.getCity() %></td>
 						</tr>
 						<tr>
-							<td>价格：180</td>
+							<td>价格：<%=item.getPrice() %>￥</td>
 						</tr>
 					</table>
 				</td>
+				<%
+				}
+				%>
 				<!-- 浏览过的商品 -->
+				<%
+					String strItemId = "";
+					//从客户端获取cookie的集合
+					Cookie[] cookies = request.getCookies();
+					if(cookies != null && cookies.length>0){
+						for(Cookie c : cookies){
+							if(c.getName().equals("ListViewCookie")){
+								strItemId = c.getValue();
+							}
+						}
+					}
+					
+					strItemId += request.getParameter("id") + ",";
+					
+					String[] strTemp = strItemId.split(",");
+					//如果存储的cookie大于1000
+					if(strTemp != null && strTemp.length>0){
+						if(strTemp.length > 1000){
+							strItemId = "";
+						}
+					}
+					Cookie cookie = new Cookie("ListViewCookie",strItemId);
+					response.addCookie(cookie);
+				%>
 				<td width="30%" bgcolor="" align="center">
 					<br>
 					<b>您浏览过的商品</b><br>
+					<!-- 循环开始 -->
+					<%
+						ArrayList<Items> itemList = itemsDao.getViewList(strItemId);
+						if(itemList != null && itemList.size()>0){
+							System.out.println("itemList.size:" + itemList.size());
+							for(Items itemTmp : itemList){
+								
+
+					%>
 					<div>
 						<dl>
 							<dt>
-								<a href="details.jsp?id=1"><img src="images/001.jpg" width="120" height="90" border="1"/></a>
+								<a href="details.jsp?id=<%=itemTmp.getId()%>"><img src="images/<%=itemTmp.getPicture() %>" width="120" height="90" border="1"/></a>
 							</dt>
-							<dd class="dd_name">沃特篮球鞋</dd>
-							<dd class="dd_city">产地：佛山  &nbsp;&nbsp;价格：180￥</dd>
+							<dd class="dd_name"><%=itemTmp.getName() %></dd>
+							<dd class="dd_city">产地：<%=itemTmp.getCity() %>  &nbsp;&nbsp;价格：<%=itemTmp.getPrice() %>￥</dd>
 						</dl>
 					</div>
+					<%
+							}
+						}
+					%>
+					<!-- 循环结束 -->
 				</td>
 			</tr>
 		</table>
