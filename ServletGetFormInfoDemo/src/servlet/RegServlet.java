@@ -18,7 +18,7 @@ import entitu.Users;
 /**
  * Servlet implementation class RegServlet
  */
-@WebServlet(name="Regservlet",urlPatterns="servlet/RegServlet")
+@WebServlet(name="Regservlet",urlPatterns="/servlet/RegServlet")
 public class RegServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
