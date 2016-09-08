@@ -55,7 +55,7 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("utf-8");
+		response.setContentType("text/html;charset=utf-8");
 		if (request.getParameter("action") != null) {
 			this.action = request.getParameter("action");
 			if (action.equals("add")) {
@@ -81,7 +81,7 @@ public class CartServlet extends HttpServlet {
 	
 	private boolean addToCart(HttpServletRequest request, HttpServletResponse response) {
 		String id = request.getParameter("id");
-		String number = request.getParameter("number");
+		String number = request.getParameter("num");
 		Items item = idao.getItemById(Integer.parseInt(id));
 		//第一次给购物车添加对象
 		if (request.getSession().getAttribute("cart") == null) {
