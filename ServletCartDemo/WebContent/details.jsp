@@ -65,6 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<h1>商品详情</h1>
 	<hr>
+	<a href="index.jsp">首页</a> >> <a href="index.jsp">商品列表</a>
 	<center>
 		<table width="750" height="60" cellpadding="0" cellspacing="0" border="0">
 			<tr>

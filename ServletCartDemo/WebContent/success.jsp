@@ -7,9 +7,17 @@
 <title>添加成功</title>
 </head>
 <body>
-             您成功购买了1件商品编号为1的商品&nbsp;&nbsp;&nbsp;&nbsp;
+	<center>
+	<img src="images/add_cart_success.jpg"/>
+	<hr>
+	<%
+		String id = request.getParameter("id");
+		String num = request.getParameter("num");
+	%>
+     	 您成功购买了<%=num%>件商品编号为<%=id %>的商品&nbsp;&nbsp;&nbsp;&nbsp;
       <br>
       <br>
       <br>
+      </center>
 </body>
 </html>
